@@ -1,0 +1,10 @@
+{
+    "id": "obsidian-post-gallery",
+    "name": "InPostGallery",
+    "version": "0.0.1",
+    "minAppVersion": "0.12.16",
+    "description": "In post gallery for obsidian",
+    "author": "Jonathan Dai",
+    "authorUrl": "https://github.com/agreatfool/",
+    "isDesktopOnly": true
+}

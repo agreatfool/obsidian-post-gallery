@@ -32,16 +32,16 @@
     "eslint": "^7.32.0",
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-prettier": "^4.0.0",
+    "jquery": "^3.6.0",
+    "justifiedGallery": "^3.8.1",
     "obsidian": "^0.12.16",
     "prettier": "^2.4.1",
     "rollup": "^2.57.0",
     "rollup-plugin-copy": "^3.4.0",
-    "rollup-plugin-css-bundle": "^1.0.4",
     "tslib": "^2.3.1",
     "typescript": "^4.4.3"
   },
   "dependencies": {
-    "lightgallery": "^2.2.1",
-    "uuid": "^8.3.2"
+    "nanoid": "^3.1.28"
   }
 }

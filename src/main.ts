@@ -1,11 +1,18 @@
-import { App, MarkdownPostProcessorContext, Modal, Notice, Plugin, PluginSettingTab, Setting } from 'obsidian';
+import { MarkdownPostProcessorContext, Plugin } from 'obsidian';
 import { MarkdownBlockProcessor } from './lib/md_block';
 
 export default class InPostGalleryPlugin extends Plugin {
   async onload(): Promise<void> {
-    console.log('Loading InPostGalleryPlugin');
+    console.log('InPostGalleryPlugin.onload');
+
     this.registerMarkdownCodeBlockProcessor('post-gallery', async (source: string, el: HTMLElement, ctx: MarkdownPostProcessorContext) => {
-      await new MarkdownBlockProcessor().process(source, el, this.app.vault, ctx);
+      await MarkdownBlockProcessor.get().process(this.app, source, el, ctx);
     });
+  }
+
+  async onunload(): Promise<void> {
+    console.log('InPostGalleryPlugin.onunload');
+
+    await MarkdownBlockProcessor.get().shutdown();
   }
 }
