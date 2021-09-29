@@ -1,0 +1,47 @@
+{
+  "name": "obsidian-post-gallery",
+  "version": "0.0.1",
+  "description": "In post gallery for obsidian",
+  "main": "./dist/main.js",
+  "scripts": {
+    "dev": "./node_modules/.bin/rollup --config rollup.config.js -w",
+    "build": "./node_modules/.bin/rollup --config rollup.config.js --environment BUILD:production",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/agreatfool/obsidian-post-gallery.git"
+  },
+  "keywords": [
+    "Obsidian"
+  ],
+  "author": "Jonathan Dai",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/agreatfool/obsidian-post-gallery/issues"
+  },
+  "homepage": "https://github.com/agreatfool/obsidian-post-gallery#readme",
+  "devDependencies": {
+    "@rollup/plugin-commonjs": "^20.0.0",
+    "@rollup/plugin-node-resolve": "^13.0.5",
+    "@rollup/plugin-typescript": "^8.2.5",
+    "@types/node": "^16.10.1",
+    "@types/uuid": "^8.3.1",
+    "@typescript-eslint/eslint-plugin": "^4.32.0",
+    "@typescript-eslint/parser": "^4.32.0",
+    "eslint": "^7.32.0",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-prettier": "^4.0.0",
+    "obsidian": "^0.12.16",
+    "prettier": "^2.4.1",
+    "rollup": "^2.57.0",
+    "rollup-plugin-copy": "^3.4.0",
+    "rollup-plugin-css-bundle": "^1.0.4",
+    "tslib": "^2.3.1",
+    "typescript": "^4.4.3"
+  },
+  "dependencies": {
+    "lightgallery": "^2.2.1",
+    "uuid": "^8.3.2"
+  }
+}
