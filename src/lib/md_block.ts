@@ -23,28 +23,22 @@ interface MarkdownBlockArgs {
 }
 
 export class MarkdownBlockProcessor {
-  private static _instance: MarkdownBlockProcessor;
-  public static get(): MarkdownBlockProcessor {
-    if (!MarkdownBlockProcessor._instance) {
-      MarkdownBlockProcessor._instance = new MarkdownBlockProcessor();
-    }
-    return MarkdownBlockProcessor._instance;
-  }
-
   private _app: App;
   private _vault: Vault;
-
-  public async process(app: App, source: string, el: HTMLElement, ctx: MarkdownPostProcessorContext): Promise<void> {
-    console.log('InPostGalleryPlugin.MarkdownBlockProcessor.process');
-
+  constructor(app: App) {
     this._app = app;
     this._vault = app.vault;
+  }
+
+  public async process(source: string, el: HTMLElement, ctx: MarkdownPostProcessorContext): Promise<void> {
+    console.log('InPostGalleryPlugin.MarkdownBlockProcessor.process');
+
     const galleryArgs = this._parseMdBlockSource(source, ctx);
     console.log('galleryArgs', galleryArgs);
 
     const images = this._getGalleryImagesResourcePaths(galleryArgs.assetPath);
     const galleryId = await this._genGalleryHtml(images, el);
-    await this._initGallery(galleryId, galleryArgs);
+    this._initGallery(galleryId, galleryArgs);
   }
 
   public async shutdown(): Promise<void> {
@@ -82,14 +76,16 @@ export class MarkdownBlockProcessor {
     return galleryId;
   }
 
-  private async _initGallery(galleryId: string, args: MarkdownBlockArgs): Promise<void> {
-    const head = document.getElementsByTagName('head')[0];
-    return new Promise((resolve) => {
-      head.createEl('script', { attr: { type: 'text/javascript' } }, (el: HTMLScriptElement) => {
-        el.text = `$("#${galleryId}").justifiedGallery(${JSON.stringify(args)});`;
-        resolve();
-      });
-    });
+  private _initGallery(galleryId: string, args: MarkdownBlockArgs): void {
+    const interval = setInterval(function () {
+      const gallery = (window as any).$(`#${galleryId}`);
+      const initialized = gallery.hasClass('justified-gallery');
+      if (initialized) {
+        clearInterval(interval);
+      } else {
+        gallery.justifiedGallery(args);
+      }
+    }, 500);
   }
 
   private _parseMdBlockSource(source: string, ctx: MarkdownPostProcessorContext): MarkdownBlockArgs {

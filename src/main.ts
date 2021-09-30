@@ -11,13 +11,7 @@ export default class InPostGalleryPlugin extends Plugin {
     console.log('InPostGalleryPlugin.onload');
 
     this.registerMarkdownCodeBlockProcessor('post-gallery', async (source: string, el: HTMLElement, ctx: MarkdownPostProcessorContext) => {
-      await MarkdownBlockProcessor.get().process(this.app, source, el, ctx);
+      await new MarkdownBlockProcessor(this.app).process(source, el, ctx);
     });
-  }
-
-  async onunload(): Promise<void> {
-    console.log('InPostGalleryPlugin.onunload');
-
-    await MarkdownBlockProcessor.get().shutdown();
   }
 }
