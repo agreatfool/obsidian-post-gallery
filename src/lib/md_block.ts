@@ -77,8 +77,10 @@ export class MarkdownBlockProcessor {
   }
 
   private _initGallery(galleryId: string, args: MarkdownBlockArgs): void {
+    const gallery = (window as any).$(`#${galleryId}`);
+    gallery.justifiedGallery(args);
+
     const interval = setInterval(function () {
-      const gallery = (window as any).$(`#${galleryId}`);
       const initialized = gallery.hasClass('justified-gallery');
       if (initialized) {
         clearInterval(interval);
