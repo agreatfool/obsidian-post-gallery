@@ -1,6 +1,6 @@
 {
   "name": "@agreatfool/obsidian-post-gallery",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "In post gallery for obsidian",
   "main": "./dist/main.js",
   "scripts": {
