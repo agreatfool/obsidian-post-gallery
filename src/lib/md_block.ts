@@ -77,14 +77,15 @@ export class MarkdownBlockProcessor {
   }
 
   private _initGallery(galleryId: string, args: MarkdownBlockArgs): void {
-    const gallery = (window as any).$(`#${galleryId}`);
-    gallery.justifiedGallery(args);
+    (window as any).$(`#${galleryId}`).justifiedGallery(args);
 
     const interval = setInterval(function () {
-      const initialized = gallery.hasClass('justified-gallery');
-      if (initialized) {
+      const gallery = (window as any).$(`#${galleryId}`);
+      if (gallery.hasClass('justified-gallery')) {
+        console.log(`InPostGalleryPlugin.MarkdownBlockProcessor._initGallery galleryId initialized`);
         clearInterval(interval);
       } else {
+        console.log(`InPostGalleryPlugin.MarkdownBlockProcessor._initGallery galleryId not done yet`);
         gallery.justifiedGallery(args);
       }
     }, 500);
