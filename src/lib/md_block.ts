@@ -34,11 +34,13 @@ export class MarkdownBlockProcessor {
     console.log('InPostGalleryPlugin.MarkdownBlockProcessor.process');
 
     const galleryArgs = this._parseMdBlockSource(source, ctx);
-    console.log('galleryArgs', galleryArgs);
+    if (galleryArgs !== undefined) {
+      console.log('galleryArgs', galleryArgs);
 
-    const images = this._getGalleryImagesResourcePaths(galleryArgs.assetPath);
-    const galleryId = await this._genGalleryHtml(images, el);
-    this._initGallery(galleryId, galleryArgs);
+      const images = this._getGalleryImagesResourcePaths(galleryArgs.assetPath);
+      const galleryId = await this._genGalleryHtml(images, el);
+      this._initGallery(galleryId, galleryArgs);
+    }
   }
 
   public async shutdown(): Promise<void> {
@@ -77,26 +79,39 @@ export class MarkdownBlockProcessor {
   }
 
   private _initGallery(galleryId: string, args: MarkdownBlockArgs): void {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     (window as any).$(`#${galleryId}`).justifiedGallery(args);
 
     const interval = setInterval(function () {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const gallery = (window as any).$(`#${galleryId}`);
       if (gallery.hasClass('justified-gallery')) {
-        console.log(`InPostGalleryPlugin.MarkdownBlockProcessor._initGallery galleryId initialized`);
+        console.log(`InPostGalleryPlugin.MarkdownBlockProcessor._initGallery galleryId[${galleryId}] initialized`);
         clearInterval(interval);
       } else {
-        console.log(`InPostGalleryPlugin.MarkdownBlockProcessor._initGallery galleryId not done yet`);
+        console.log(`InPostGalleryPlugin.MarkdownBlockProcessor._initGallery galleryId[${galleryId}] not done yet`);
         gallery.justifiedGallery(args);
       }
     }, 500);
   }
 
   private _parseMdBlockSource(source: string, ctx: MarkdownPostProcessorContext): MarkdownBlockArgs {
-    const postAssetsPath = LibPath.join((ctx.frontmatter as Frontmatter).path, ASSETS_DIR);
+    let postAssetsPath: string;
+
+    // formatter is the meta data at the top of the post
+    // it could be not ready(empty) when this function is called
+    // so need to do validation
+    const formatter = ctx.frontmatter as Frontmatter;
+    if (typeof formatter === 'object' && 'path' in formatter) {
+      // formatter.path: "/2022/11/20221104-2022-11-04"
+      postAssetsPath = LibPath.join((ctx.frontmatter as Frontmatter).path, ASSETS_DIR);
+    } else {
+      // else we don't need to handle this case, return undefined directly
+      return undefined;
+    }
+
     const rows = source.split('\n').filter((row) => row !== '');
-
-    const data = this._makeDefaultBlockData();
-
+    const data: MarkdownBlockArgs = this._makeDefaultBlockData();
     for (const row of rows) {
       this._parseBlockVal(row, 'name', data);
       this._parseBlockVal(row, 'rowHeight', data);
