@@ -178,8 +178,9 @@ export class MarkdownBlockProcessor {
   }
 
   private _openFile(resourcePath: string): void {
-    // "app://local//Users/XXX/Library/Mobile Documents/iCloud~md~obsidian/Documents/plugin_test/20190108-long-test/assets/gallery01/gallery00001.jpeg?1632796390000"
-    let path = decodeURIComponent(resourcePath).replace('app://local/', '');
+    // "app://...//Users/XXX/Library/Mobile Documents/iCloud~md~obsidian/Documents/plugin_test/20190108-long-test/assets/gallery01/gallery00001.jpeg?1632796390000"
+    let path = resourcePath.substring(resourcePath.indexOf('/Users/'));
+    console.log(resourcePath);
     if (path.includes('?')) {
       path = path.substr(0, path.indexOf('?'));
     }
